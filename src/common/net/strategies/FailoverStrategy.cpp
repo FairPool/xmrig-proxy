@@ -28,7 +28,7 @@
 #include "interfaces/IStrategyListener.h"
 
 
-FailoverStrategy::FailoverStrategy(const std::vector<Pool> &urls, int retryPause, int retries, IStrategyListener *listener, bool quiet) :
+FailoverStrategy::FailoverStrategy(const std::vector<Pool> &urls, int retryPause, int retries, IStrategyListener *listener, bool quiet,const char* rigId) :
     m_quiet(quiet),
     m_retries(retries),
     m_retryPause(retryPause),
@@ -37,7 +37,7 @@ FailoverStrategy::FailoverStrategy(const std::vector<Pool> &urls, int retryPause
     m_listener(listener)
 {
     for (const Pool &url : urls) {
-        add(url);
+        add(url, rigId);
     }
 }
 
@@ -153,9 +153,9 @@ void FailoverStrategy::onResultAccepted(Client *client, const SubmitResult &resu
 }
 
 
-void FailoverStrategy::add(const Pool &pool)
+void FailoverStrategy::add(const Pool &pool, const char* rigId)
 {
-    Client *client = new Client((int) m_pools.size(), Platform::userAgent(), this);
+    Client *client = new Client((int) m_pools.size(), Platform::userAgent(), this, rigId);
     client->setPool(pool);
     client->setRetries(m_retries);
     client->setRetryPause(m_retryPause * 1000);

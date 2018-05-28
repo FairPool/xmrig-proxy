@@ -55,7 +55,7 @@ public:
     inline bool isValid() const                        { return !m_host.isNull() && m_port > 0; }
     inline const char *host() const                    { return m_host.data(); }
     inline const char *password() const                { return !m_password.isNull() ? m_password.data() : kDefaultPassword; }
-    inline const char *rigId() const                   { return m_rigId.data(); }
+    inline const char *rigId() const                   { return m_rigId.size() > 0 ? m_rigId.data() : nullptr; }
     inline const char *url() const                     { return m_url.data(); }
     inline const char *user() const                    { return !m_user.isNull() ? m_user.data() : kDefaultUser; }
     inline const xmrig::Algorithm &algorithm() const   { return m_algorithm; }

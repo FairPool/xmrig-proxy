@@ -41,7 +41,7 @@ class Url;
 class FailoverStrategy : public IStrategy, public IClientListener
 {
 public:
-    FailoverStrategy(const std::vector<Pool> &urls, int retryPause, int retries, IStrategyListener *listener, bool quiet = false);
+    FailoverStrategy(const std::vector<Pool> &urls, int retryPause, int retries, IStrategyListener *listener, bool quiet = false, const char* rigId = nullptr);
     ~FailoverStrategy();
 
 public:
@@ -60,7 +60,7 @@ protected:
     void onResultAccepted(Client *client, const SubmitResult &result, const char *error) override;
 
 private:
-    void add(const Pool &pool);
+    void add(const Pool &pool, const char* rigId = nullptr);
 
     const bool m_quiet;
     const int m_retries;

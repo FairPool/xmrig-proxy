@@ -28,11 +28,11 @@
 #include "interfaces/IStrategyListener.h"
 
 
-SinglePoolStrategy::SinglePoolStrategy(const Pool &pool, int retryPause, int retries, IStrategyListener *listener, bool quiet) :
+SinglePoolStrategy::SinglePoolStrategy(const Pool &pool, int retryPause, int retries, IStrategyListener *listener, bool quiet, const char* rigId) :
     m_active(false),
     m_listener(listener)
 {
-    m_client = new Client(0, Platform::userAgent(), this);
+    m_client = new Client(0, Platform::userAgent(), this, rigId);
     m_client->setPool(pool);
     m_client->setRetries(retries);
     m_client->setRetryPause(retryPause * 1000);

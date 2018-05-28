@@ -184,7 +184,7 @@ void SimpleSplitter::login(LoginEvent *event)
         }
     }
 
-    SimpleMapper *mapper = new SimpleMapper(m_sequence++, m_controller);
+    SimpleMapper *mapper = new SimpleMapper(m_sequence++, m_controller, event->request.login());
     m_upstreams[mapper->id()] = mapper;
 
     mapper->add(event->miner(), event->request);

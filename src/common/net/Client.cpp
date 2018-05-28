@@ -48,7 +48,7 @@ int64_t Client::m_sequence = 1;
 xmrig::Storage<Client> Client::m_storage;
 
 
-Client::Client(int id, const char *agent, IClientListener *listener) :
+Client::Client(int id, const char *agent, IClientListener *listener, const char* rigId) :
     m_ipv6(false),
     m_nicehash(false),
     m_quiet(false),
@@ -66,7 +66,8 @@ Client::Client(int id, const char *agent, IClientListener *listener) :
     m_keepAlive(0),
     m_key(0),
     m_stream(nullptr),
-    m_socket(nullptr)
+    m_socket(nullptr),
+    RigId(rigId ? rigId : "")
 {
     m_key = m_storage.add(this);
 
@@ -476,6 +477,10 @@ void Client::login()
 
     if (m_pool.rigId()) {
         params.AddMember("rigid", StringRef(m_pool.rigId()), allocator);
+    } 
+    else if (!RigId.empty())
+    {
+        params.AddMember("rigid", StringRef(RigId.c_str()), allocator);
     }
 
     Value algo(kArrayType);

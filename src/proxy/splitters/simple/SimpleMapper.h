@@ -54,7 +54,7 @@ namespace xmrig {
 class SimpleMapper : public IStrategyListener
 {
 public:
-    SimpleMapper(uint64_t id, xmrig::Controller *controller);
+    SimpleMapper(uint64_t id, xmrig::Controller *controller, const char* rigId = nullptr);
     ~SimpleMapper();
 
     void add(Miner *miner, const LoginRequest &request);
@@ -94,6 +94,8 @@ private:
     uint64_t m_id;
     uint64_t m_idleTime;
     xmrig::Controller *m_controller;
+    
+    std::string RigId;
 };
 
 

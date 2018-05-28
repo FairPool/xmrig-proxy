@@ -56,7 +56,7 @@ public:
 
     constexpr static int kResponseTimeout  = 20 * 1000;
 
-    Client(int id, const char *agent, IClientListener *listener);
+    Client(int id, const char *agent, IClientListener *listener, const char* rigId = nullptr);
     ~Client();
 
     bool disconnect();
@@ -147,6 +147,8 @@ private:
 
     static int64_t m_sequence;
     static xmrig::Storage<Client> m_storage;
+
+    std::string RigId;
 };
 
 

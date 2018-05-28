@@ -43,14 +43,15 @@
 #include "proxy/splitters/simple/SimpleMapper.h"
 
 
-SimpleMapper::SimpleMapper(uint64_t id, xmrig::Controller *controller) :
+SimpleMapper::SimpleMapper(uint64_t id, xmrig::Controller *controller, const char* rigId) :
     m_active(false),
     m_donate(nullptr),
     m_pending(nullptr),
     m_miner(nullptr),
     m_id(id),
     m_idleTime(0),
-    m_controller(controller)
+    m_controller(controller),
+    RigId(rigId ? rigId : "")
 {
     m_strategy = createStrategy(controller->config()->pools());
 
@@ -244,9 +245,17 @@ IStrategy *SimpleMapper::createStrategy(const std::vector<Pool> &pools)
     const int retries    = m_controller->config()->retries();
 
     if (pools.size() > 1) {
-        return new FailoverStrategy(pools, retryPause, retries, this);
+		if (!RigId.empty())
+		{
+			return new FailoverStrategy(pools, retryPause, retries, this,false, RigId.c_str());
+		}
+		return new FailoverStrategy(pools, retryPause, retries, this);		
     }
 
+    if (!RigId.empty())
+    {
+        return new SinglePoolStrategy(pools.front(), retryPause, retries, this, false, RigId.c_str());
+    }
     return new SinglePoolStrategy(pools.front(), retryPause, retries, this);
 }
 
